@@ -12,14 +12,10 @@ def tx_execute_before(from, to, value, gas, gasPrice, data) :
     # 4. collect refunded gas
     addBalance(from, remainedGas * gasPrice)
 
-# "delegatee" is optional
+# "delegatee" is optional in transaction
 def tx_execute_after(from, to, value, gas, gasPrice, data, delegatee=none) :
-
     # 1. check if delegatee passed or not
     if delegatee:
-
-
-
         # 1-1. check if delegatee account registered in staminaContract
         if (staminaContract.isDelegatee(delegatee)):
 
@@ -33,7 +29,7 @@ def tx_execute_after(from, to, value, gas, gasPrice, data, delegatee=none) :
             executeVM(from, to, value, gas, gasPrice, data)
 
             # 1-1-4. collect refunded gas
-            addBalance(from, remainedGas * gasPrice)
+            addBalance(delegatee, remainedGas * gasPrice)
 
             # 1-1-4. return
             return
@@ -46,23 +42,18 @@ def tx_execute_after(from, to, value, gas, gasPrice, data, delegatee=none) :
             return
 
       # 2. normal transaction
-      else:
-          # 1. check intrinsic gas + value
-          balance = getBalance(from)
+    else:
+        # 2-1. check intrinsic gas + value
+        balance = getBalance(from)
 
-          assert balance >= value + gas * gasPrice
+        # 2-2. check intrinsic gas if `delegatee` has delegatee
+        assert balance >= value + gas * gasPrice
 
-          # 2. subtract gas + value
-          subtractBalance(from, balance - value + gas * gasPrice)
+        # 2-3. subtract gas + value
+        subtractBalance(from, balance - value + gas * gasPrice)
 
-          # 3. execute EVM
-          executeVM(from, to, value, gas, gasPrice, data)
-          # 4. collect refunded gas
-          addBalance(from, remainedGas * gasPrice)
+        # 2-4. execute EVM
+        executeVM(from, to, value, gas, gasPrice, data)
 
-
-
-
-asdfa
-    asdfa
-        asdf
+        # 2-5. collect refunded gas
+        addBalance(from, remainedGas * gasPrice)
