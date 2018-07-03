@@ -13,10 +13,10 @@ def tx_execute_before(from, to, value, gas, gasPrice, data) :
     addBalance(from, remainedGas * gasPrice)
 
 # "delegatee" is optional in transaction
-def tx_execute_after(from, to, value, gas, gasPrice, data, delegatee=none) :
+def tx_execute_after(from, to, value, gas, gasPrice, data, delegatee=none):
     # 1. check if delegatee passed or not
     if delegatee:
-        # 1-1. check if delegatee account registered in staminaContract
+        # 1-1. check if delegatee account registered in staminaContract, executeVM
         if (staminaContract.isDelegatee(delegatee)):
 
             # 1-1-1. check intrinsic gas if `delegatee` has delegatee
@@ -35,7 +35,7 @@ def tx_execute_after(from, to, value, gas, gasPrice, data, delegatee=none) :
             return
 
         # 1-2 case where delegatee is not registered
-        else
+        else:
             # "delegatee" account is in transaction but does not registered to staminaContract
             # do nothing
             assert()
