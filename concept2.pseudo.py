@@ -19,7 +19,7 @@ def tx_execute_after(from, to, value, gas, gasPrice, data, delegatee=none):
         # 1-1. check if (`to`, `delegatee`) tuple is registered in staminaContract
         if staminaContract.registered(to, delegatee):
             # 1-1-1. check if `delegatee` can pay upfront cost(only gas * gasPrice)
-            assert staminaContract.balanceOf(delegatee) >= gas * gasPrice# 1-1-1. check if delegatee can pay upfront cost(only gas * gasPrice)
+            assert staminaContract.balanceOf(delegatee) >= gas * gasPrice
             
             # 1-1-2. check if `from` can pay upfront cost(only value)
             assert getBalance(from) >= value
